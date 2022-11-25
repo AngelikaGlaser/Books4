@@ -2,6 +2,7 @@ const formEl = document.querySelector('#add-book')
 formEl.addEventListener('submit', addBook)
 const booksrow = document.querySelector('#table')
 booksrow.addEventListener('click', deleteBook)
+//document.addEventListener('DOMContentLoaded', getBooksFromLS)
 
 function addBook(event) {
 
@@ -17,7 +18,10 @@ function addBook(event) {
                         <td>${ISBNInPut.value}</td>
                         <td><a href="#" class="secondary-content">X</a></td>
                    </tr>`
+    // save books value to LS
+    AddBooksToLS(TitleInPut.value, AuthorInPut.value, ISBNInPut.value)
 
+    //delete input value from input fields
     TitleInPut.value = ''
     AuthorInPut.value = ''
     ISBNInPut.value = ''
@@ -32,4 +36,15 @@ function deleteBook(event) {
             event.target.closest('tr').remove()
         }
     }
+}
+
+function AddBooksToLS(title, author, isbn){
+    let books
+    if(localStorage.getItem('books') === null){
+        books = []
+    } else {
+        books = JSON.parse(localStorage.getItem('books'))
+    }
+    books.push([title, author, isbn])
+    localStorage.setItem('books', JSON.stringify(books))
 }
