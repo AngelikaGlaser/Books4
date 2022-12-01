@@ -2,7 +2,7 @@ const formEl = document.querySelector('#add-book')
 formEl.addEventListener('submit', addBook)
 const booksrow = document.querySelector('#table')
 booksrow.addEventListener('click', deleteBook)
-//document.addEventListener('DOMContentLoaded', getBooksFromLS)
+document.addEventListener('DOMContentLoaded', getBooksFromLS)
 
 function addBook(event) {
 
@@ -66,4 +66,25 @@ function deleteBooksFromLS(book) {
         }
     localStorage.setItem('books', JSON.stringify(books))
     })
+}
+
+function getBooksFromLS(event){
+    let books
+    if(localStorage.getItem('books') === null){
+        books = []
+    } else {
+        books = JSON.parse(localStorage.getItem('books'))
+    }
+    books.forEach((BooksFromLS) => {
+
+        //add the input values + deletebutton to the table
+        const TableData = `<tr>
+                        <td>${BooksFromLS[0]}</td>
+                        <td>${BooksFromLS[1]}</td>
+                        <td>${BooksFromLS[2]}</td>
+                        <td><a href="#" class="secondary-content">X</a></td>
+                   </tr>`
+        document.getElementById('table').innerHTML += TableData;
+    })
+    localStorage.setItem('books', JSON.stringify(books))
 }
