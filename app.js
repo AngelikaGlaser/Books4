@@ -34,6 +34,10 @@ function deleteBook(event) {
     if (event.target.classList.contains('secondary-content')) {
         if (confirm('Do you really want to delete this?')) {
             event.target.closest('tr').remove()
+            let book_target = event.target.parentElement.parentElement.textContent.split('\n').map(elem => elem.trim())
+            let book_array = Array.from(book_target).filter(elm => elm)
+            let book = book_array[0]
+            deleteBooksFromLS(book)
         }
     }
 }
@@ -47,4 +51,19 @@ function AddBooksToLS(title, author, isbn){
     }
     books.push([title, author, isbn])
     localStorage.setItem('books', JSON.stringify(books))
+}
+
+function deleteBooksFromLS(book) {
+    let books
+    if (localStorage.getItem('books') === null) {
+        books = []
+    } else {
+        books = JSON.parse(localStorage.getItem('books'))
+    }
+    books.forEach((bookFromLS, index) => {
+        if (bookFromLS[0] === book){
+            books.splice(index, 1)
+        }
+    localStorage.setItem('books', JSON.stringify(books))
+    })
 }
